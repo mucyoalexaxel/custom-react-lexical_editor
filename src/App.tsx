@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { LexicalComposer } from "@lexical/react/LexicalComposer";
 
-function App() {
+import { SharedHistoryContext } from "./context/SharedHistoryContext";
+import Editor from "./Editor";
+import PlaygroundNodes from "./nodes/PlaygroundNodes";
+import LexicalEditorTheme from "./themes/LexicalEditorTheme";
+
+export default function App(): JSX.Element {
+  const initialConfig = {
+    editorState: null,
+    namespace: "Playground",
+    nodes: [...PlaygroundNodes],
+    onError: (error: Error) => {
+      throw error;
+    },
+    theme: LexicalEditorTheme,
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LexicalComposer initialConfig={initialConfig}>
+      <SharedHistoryContext>
+        <div className="editor-shell">
+          <Editor />
+        </div>
+      </SharedHistoryContext>
+    </LexicalComposer>
   );
 }
-
-export default App;
